@@ -3,14 +3,39 @@ import {useEffect, useState} from "react";
 
 function App() {
 	const [messageList, setMessageList] = useState([]);
+	const [userMessage, setUserMessage] = useState({});
+	const [robotMessage, setRobotMessage] = useState({});
 	
 	useEffect(() => {
-		setMessageList([{
+		setMessageList([...messageList, {
 			id: 1,
 			text: "Чтобы установить мир, нужно просто быть вместе, любить друг друга и приносить ближним мир и радость",
 			author: 'Mother Teresa'
 		}]);
 	}, []);
+	
+	useEffect(() => {
+		if (Object.keys(userMessage).length > 0) {
+			setMessageList([...messageList, userMessage])
+		}
+		
+		setTimeout(() => {
+			if (messageList.length) {
+				setRobotMessage({
+					id: messageList.length + 1,
+					text: `Добрый день ${userMessage.author}`,
+					author: 'Robot',
+				});
+			}
+		}, 1500)
+		
+	}, [userMessage]);
+	
+	useEffect(() => {
+		if (Object.keys(robotMessage).length > 0) {
+			setMessageList([...messageList, robotMessage])
+		}
+	}, [robotMessage])
 	
 	return (
 		<div className="app">
@@ -22,7 +47,7 @@ function App() {
 			<main>
 				<div className="container">
 					<MessageComponent messageList={messageList}/>
-					<FormMessage setMessageList={setMessageList} messageList={messageList}/>
+					<FormMessage setUserMessage={setUserMessage} messageList={messageList}/>
 				</div>
 			</main>
 		</div>
@@ -31,17 +56,17 @@ function App() {
 
 export default App;
 
-const FormMessage = ({setMessageList, messageList}) => {
+const FormMessage = ({setUserMessage, messageList}) => {
 	
 	const [text, setText] = useState('');
 	const [author, setAuthor] = useState('');
 	
 	const addMessage = () => {
-		setMessageList([...messageList, {
+		setUserMessage({
 			id: messageList.length + 1,
 			text: text,
 			author: author
-		}]);
+		});
 	}
 	
 	return (
