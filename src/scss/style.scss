@@ -25,8 +25,13 @@ main {
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
+  margin-top: 30px;
+}
+
+.grid {
+  display: flex;
+  justify-content: center;
+
 }
 
 .wrapper {
@@ -35,7 +40,7 @@ main {
   text-align: start;
   flex-direction: column;
   margin: 10px;
-  width: 800px;
+  width: 700px;
   height: 500px;
   border: 1px solid black;
 }
@@ -49,31 +54,35 @@ main {
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
+  //display: flex;
+  //flex-direction: column;
+  //align-items: start;
+  display: block;
   margin: 10px;
+  padding: 10px;
 
   &__title {
     padding: 5px;
   }
 
   &__message {
-    width: 280px;
+    width: 260px;
     height: 120px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   &__author {
-    width: 280px;
+    width: 260px;
     height: 30px;
-    margin-bottom: 10px;
+    top: 20px;
+    margin-bottom: 20px;
   }
 
   &__send {
     width: 100px;
     height: 30px;
-    margin-bottom: 10px;
+    top: 60px;
+    margin: 20px 0;
   }
 }
 

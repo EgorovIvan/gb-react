@@ -1,10 +1,40 @@
+import * as React from 'react';
 import './scss/style.scss';
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
+import {Box, Container, Button, TextField, Grid, List, ListItem, IconButton, ListItemText} from '@mui/material';
+import CommentIcon from '@mui/icons-material/Comment';
+import SendIcon from '@mui/icons-material/Send';
+import {ThemeProvider, createTheme} from '@mui/material/styles';
+
+const theme = createTheme({
+	palette: {
+		primary: {
+			main: "#03a9f4",
+		},
+	},
+});
 
 function App() {
-	const [messageList, setMessageList] = useState([]);
-	const [userMessage, setUserMessage] = useState({});
-	const [robotMessage, setRobotMessage] = useState({});
+	const [messageList, setMessageList] = useState([])
+	const [userMessage, setUserMessage] = useState({})
+	const [robotMessage, setRobotMessage] = useState({})
+	const textComp = useRef(null)
+	const chatList = [{
+		id: 1,
+		name: 'Без Марины',
+	},
+		{
+			id: 2,
+			name: 'Работа',
+		},
+		{
+			id: 3,
+			name: 'Семья',
+		},
+		{
+			id: 4,
+			name: 'Шерегеш',
+		}]
 	
 	useEffect(() => {
 		setMessageList([...messageList, {
@@ -25,7 +55,7 @@ function App() {
 					id: messageList.length + 1,
 					text: `Добрый день ${userMessage.author}`,
 					author: 'Robot',
-				});
+				})
 			}
 		}, 1500)
 		
@@ -39,24 +69,62 @@ function App() {
 	
 	return (
 		<div className="app">
-			<header>
-				<div className="container">
-					<h3 className="title">React</h3>
-				</div>
-			</header>
-			<main>
-				<div className="container">
-					<MessageComponent messageList={messageList}/>
-					<FormMessage setUserMessage={setUserMessage} messageList={messageList}/>
-				</div>
-			</main>
+			<ThemeProvider theme={theme}>
+				<header>
+					<div className="container">
+						<h3 className="title">React</h3>
+					</div>
+				</header>
+				<main>
+					<Container fixed className="container">
+						<Grid container spacing={2} className="grid">
+							<Grid>
+								<List sx={{width: '100%', maxWidth: 300, bgcolor: 'background.paper'}}>
+									{chatList.map((value) => (
+										<ListItem
+											key={value.id}
+											disableGutters
+											secondaryAction={
+												<IconButton aria-label="comment">
+													<CommentIcon/>
+												</IconButton>
+											}
+										>
+											<ListItemText primary={`Chat: ${value.name}`}/>
+										</ListItem>
+									))}
+								</List>
+								<Box
+									sx={{
+										width: 300,
+										height: 300,
+										backgroundColor: 'primary.dark',
+										'&:hover': {
+											backgroundColor: 'primary.main',
+											opacity: [0.9, 0.8, 0.7],
+										},
+									}}
+								>
+									<FormMessage setUserMessage={setUserMessage} userMessage={userMessage}
+									             messageList={messageList} textComp={textComp}/>
+								</Box>
+							</Grid>
+							<Grid>
+								<MessageComponent messageList={messageList}/>
+							</Grid>
+						</Grid>
+					
+					
+					</Container>
+				</main>
+			</ThemeProvider>
 		</div>
 	);
 }
 
 export default App;
 
-const FormMessage = ({setUserMessage, messageList}) => {
+const FormMessage = ({setUserMessage, userMessage, messageList, textComp}) => {
 	
 	const [text, setText] = useState('');
 	const [author, setAuthor] = useState('');
@@ -69,15 +137,21 @@ const FormMessage = ({setUserMessage, messageList}) => {
 		});
 	}
 	
+	useEffect(() => {
+		textComp.current?.focus()
+	}, [userMessage])
+	
 	return (
 		<div className="form">
-			<h4 className="form__title">Message:</h4>
-			<textarea className="form__message" name="message" cols="30" rows="10"
-			          onChange={event => setText(event.target.value)}></textarea>
-			<h4 className="form__title">Author:</h4>
-			<input className="form__author" type="text" placeholder="ввести имя"
-			       onChange={event => setAuthor(event.target.value)}/>
-			<button className="form__send" onClick={addMessage}>Send</button>
+			<textarea
+			           rows={4}
+			           className="form__message"
+			           ref={textComp}
+			           onChange={event => setText(event.target.value)}></textarea>
+			<TextField id="outlined-basic" label="Author" variant="outlined" className="form__author" type="text"
+			           defaultValue="Введите имя"
+			           onChange={event => setAuthor(event.target.value)}/>
+			<Button variant="contained" endIcon={<SendIcon/>} className="form__send" onClick={addMessage}>Send</Button>
 		</div>
 	)
 }
@@ -94,3 +168,4 @@ const MessageComponent = ({messageList}) => {
 		</div>
 	)
 }
+
