@@ -60,9 +60,11 @@ const Chats = () => {
 	
 	const handleAddChat = () => {
 		setOpenForm(false)
-		if (nameChat) {
+		if (nameChat.length > 0) {
 			setChatList([...chatList, {id: chatList.length, name: nameChat, messages: []}])
 		}
+		setNameChat('')
+		console.log(nameChat.length)
 	}
 	
 	const removeChat = (elemId) => {
