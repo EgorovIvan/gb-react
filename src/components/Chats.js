@@ -6,69 +6,40 @@ import {Box, Button, Grid, List, ListItem, IconButton, ListItemText, OutlinedInp
 import CancelIcon from '@mui/icons-material/Cancel'
 import SendIcon from "@mui/icons-material/Send";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import {useDispatch, useSelector} from "react-redux";
+import {addChat, removeChat, addMessage} from "../slice/chats";
+import {getChatList} from '../store/chats/selectors'
+import {shallowEqual} from "react-redux";
 
 const Chats = () => {
+	
 	const [openForm, setOpenForm] = useState(false)
 	const [nameChat, setNameChat] = useState('')
 	const textComp = useRef(null)
 	let {chatId} = useParams()
-	const [chatList, setChatList] = useState(
-		[
-			{
-				id: 0,
-				name: 'Mark',
-				messages: [
-					{
-						author: 'Mark',
-						text: 'Hi'
-					},
-					{
-						author: 'You',
-						text: 'Hello'
-					}
-				]
-			},
-			{
-				id: 1,
-				name: 'John',
-				messages: [
-					{
-						author: 'John',
-						text: 'What is your name'
-					},
-					{
-						author: 'You',
-						text: 'my name is Ivan'
-					}
-				]
-			},
-			{
-				id: 2,
-				name: 'Maria',
-				messages: []
-			},
-			{
-				id: 3,
-				name: 'Michael',
-				messages: []
-			}]
-	)
+	const chats = useSelector(getChatList, shallowEqual)
+	const dispatch = useDispatch()
+	
 	
 	const handleOpenForm = () => {
 		setOpenForm(true)
 	}
 	
 	const handleAddChat = () => {
+		const newChat = {
+			id: chats.length,
+			name: nameChat,
+			messages: []
+		}
 		setOpenForm(false)
 		if (nameChat.length > 0) {
-			setChatList([...chatList, {id: chatList.length, name: nameChat, messages: []}])
+			dispatch(addChat(newChat))
 		}
 		setNameChat('')
-		console.log(nameChat.length)
 	}
 	
-	const removeChat = (elemId) => {
-		setChatList(chatList.filter(item => item.id !== elemId))
+	const handleRemoveChat = (el) => {
+		dispatch(removeChat(el))
 	}
 	
 	return (
@@ -77,12 +48,12 @@ const Chats = () => {
 				<Grid>
 					<List sx={{width: '100%', maxWidth: 300, bgcolor: 'background.paper'}}>
 						<h4>Friends</h4>
-						{chatList.map((el) => (
+						{chats.map((el) => (
 							<ListItem
 								key={el.id}
 								disableGutters
 								secondaryAction={
-									<IconButton aria-label="cancel" onClick={() => removeChat(el.id)}>
+									<IconButton aria-label="cancel" onClick={() => handleRemoveChat(el)}>
 										<CancelIcon/>
 									</IconButton>
 								}
@@ -109,7 +80,7 @@ const Chats = () => {
 					</List>
 				</Grid>
 				<Grid>
-					<MessageComponent chatId={chatId} chatList={chatList}/>
+					<MessageComponent chatId={chatId}/>
 					<Box
 						sx={{
 							width: 430,
@@ -123,7 +94,7 @@ const Chats = () => {
 							},
 						}}
 					>
-						<FormMessage chatList={chatList} setChatList={setChatList} chatId={chatId} textComp={textComp}/>
+						<FormMessage chatId={chatId} textComp={textComp}/>
 					</Box>
 				</Grid>
 			</Grid>
@@ -133,41 +104,38 @@ const Chats = () => {
 
 export default Chats
 
-const FormMessage = ({chatList, setChatList, chatId, textComp}) => {
+const FormMessage = ({chatId, textComp}) => {
 	const [robotMessage, setRobotMessage] = useState({})
 	const [flag, setFlag] = useState(false)
 	const [text, setText] = useState('');
+	const chats = useSelector(getChatList, shallowEqual)
+	const dispatch = useDispatch()
 	
-	const addMessage = (id) => {
-		let find = chatList.find(item => item.id == id)
-		setChatList(chatList.map((item, id) => {
-			if (find.id == id) {
-				chatList[id].messages.push(
-					{
-						text: text,
-						author: 'You'
-					}
-				)
-				return chatList[id]
-			} else {
-				return chatList[id]
-			}
-		}))
+	const handleAddMessage = () => {
+		const newMessage = {
+			text: text,
+			author: 'You'
+		}
+		if (chats[chatId] && chatId) {
+			dispatch(addMessage({id:chatId, data:newMessage}))
+			setFlag(true)
+		} else {
+			alert('Необходимо выбрать чат')
+		}
 		setText('')
-		setFlag(true)
 	}
 	
 	useEffect(() => {
 		textComp.current?.focus()
-	}, [chatList])
+	}, [chats])
 	
 	useEffect(() => {
 		
 		setTimeout(() => {
-			if (flag && chatId && chatList[chatId]) {
+			if (flag && chatId && chats[chatId]) {
 				setRobotMessage({
 					text: 'Text friend',
-					author: `${chatList[chatId].name}`,
+					author: `${chats[chatId].name}`,
 				})
 			}
 		}, 1500)
@@ -176,15 +144,7 @@ const FormMessage = ({chatList, setChatList, chatId, textComp}) => {
 	
 	useEffect(() => {
 		if (Object.keys(robotMessage).length > 0) {
-			setChatList(chatList.map((item, id) => {
-				if (chatId == id) {
-					chatList[id].messages.push(robotMessage)
-					return chatList[id]
-				} else {
-					return chatList[id]
-				}
-			}))
-			setText('')
+			dispatch(addMessage({id:chatId, data:robotMessage}))
 			setFlag(true)
 		}
 		setFlag(false)
@@ -201,16 +161,18 @@ const FormMessage = ({chatList, setChatList, chatId, textComp}) => {
 								onChange={event => setText(event.target.value)}>
 							</textarea>
 			<Button variant="contained" endIcon={<SendIcon/>} className="form__send"
-			        onClick={() => addMessage(chatId)}>Send</Button>
+			        onClick={handleAddMessage}>Send</Button>
 		</div>
 	)
 }
 
-const MessageComponent = ({chatId, chatList}) => {
+const MessageComponent = ({chatId}) => {
+	const chats = useSelector(getChatList, shallowEqual)
+	
 	return (
 		<div className="wrapper">
 			<div className="chat">
-				{chatId && chatList[chatId] ? chatList[chatId].messages.map((item, id) => [<div
+				{chatId && chats[chatId] ? chats[chatId].messages.map((item, id) => [<div
 						className="messages__item"
 						key={id}><h4 className="">Text: {item.text}</h4>
 						<p>Author: {item.author}</p>
