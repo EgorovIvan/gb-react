@@ -52,7 +52,8 @@ const chatSlice = createSlice({
 			return state.filter(item => item.id !== action.payload.id)
 		},
 		addMessage: (state, action) => {
-			state[action.payload.id].messages.push(action.payload.data)
+			const find = state.find((item) => item.id == action.payload.id)
+			find.messages.push(action.payload.data)
 			return state
 		}
 	}

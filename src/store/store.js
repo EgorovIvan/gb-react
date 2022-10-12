@@ -1,18 +1,30 @@
-import { compose } from 'redux';
-
 import {chatReducers} from "../slice/chats";
 import {profileReducers} from '../slice/profile'
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { configureStore, combineReducers, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const middleware = getDefaultMiddleware({
+	immutableCheck: false,
+	serializableCheck: false,
+	thunk: true,
+});
 
-const reducer = combineReducers({
-	chatReducers,
-	profileReducers
+const reducers = combineReducers({
+	chatReducers: chatReducers,
+	profileReducers: profileReducers
 })
-const store = configureStore({
-	reducer,
-	composeEnhancers
+
+export const store = configureStore({
+	reducer: persistReducer(
+		{
+			key: 'root',
+			storage
+		},
+		reducers
+	),
+	middleware,
+	devTools: process.env.NODE_ENV !== 'production',
 })
 
-export default store
+export const persistor = persistStore(store);

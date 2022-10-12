@@ -1,46 +1,14 @@
-import * as React from "react";
-import {useEffect, useRef, useState} from "react";
-import {useParams, Link} from "react-router-dom"
-import '../scss/style.scss';
+import * as React from "react"
+import {Link} from "react-router-dom"
+import '../scss/style.scss'
 import {Box, Button, Grid, List, ListItem, IconButton, ListItemText, OutlinedInput} from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel'
-import SendIcon from "@mui/icons-material/Send";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import {useDispatch, useSelector} from "react-redux";
-import {addChat, removeChat, addMessage} from "../slice/chats";
-import {getChatList} from '../store/chats/selectors'
-import {shallowEqual} from "react-redux";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import MessageComponent from './MessageComponent'
+import FormMessageContainer from '../containers/FormMessageContainer'
 
-const Chats = () => {
+const Chats = ({chats, chatId, textComp, openForm, setNameChat, handleAddChat, handleOpenForm, handleRemoveChat}) => {
 	
-	const [openForm, setOpenForm] = useState(false)
-	const [nameChat, setNameChat] = useState('')
-	const textComp = useRef(null)
-	let {chatId} = useParams()
-	const chats = useSelector(getChatList, shallowEqual)
-	const dispatch = useDispatch()
-	
-	
-	const handleOpenForm = () => {
-		setOpenForm(true)
-	}
-	
-	const handleAddChat = () => {
-		const newChat = {
-			id: chats.length,
-			name: nameChat,
-			messages: []
-		}
-		setOpenForm(false)
-		if (nameChat.length > 0) {
-			dispatch(addChat(newChat))
-		}
-		setNameChat('')
-	}
-	
-	const handleRemoveChat = (el) => {
-		dispatch(removeChat(el))
-	}
 	
 	return (
 		<div>
@@ -94,7 +62,7 @@ const Chats = () => {
 							},
 						}}
 					>
-						<FormMessage chatId={chatId} textComp={textComp}/>
+						<FormMessageContainer chatId={chatId} textComp={textComp}/>
 					</Box>
 				</Grid>
 			</Grid>
@@ -104,82 +72,4 @@ const Chats = () => {
 
 export default Chats
 
-const FormMessage = ({chatId, textComp}) => {
-	const [robotMessage, setRobotMessage] = useState({})
-	const [flag, setFlag] = useState(false)
-	const [text, setText] = useState('');
-	const chats = useSelector(getChatList, shallowEqual)
-	const dispatch = useDispatch()
-	
-	const handleAddMessage = () => {
-		const newMessage = {
-			text: text,
-			author: 'You'
-		}
-		if (chats[chatId] && chatId) {
-			dispatch(addMessage({id:chatId, data:newMessage}))
-			setFlag(true)
-		} else {
-			alert('Необходимо выбрать чат')
-		}
-		setText('')
-	}
-	
-	useEffect(() => {
-		textComp.current?.focus()
-	}, [chats])
-	
-	useEffect(() => {
-		
-		setTimeout(() => {
-			if (flag && chatId && chats[chatId]) {
-				setRobotMessage({
-					text: 'Text friend',
-					author: `${chats[chatId].name}`,
-				})
-			}
-		}, 1500)
-		
-	}, [flag]);
-	
-	useEffect(() => {
-		if (Object.keys(robotMessage).length > 0) {
-			dispatch(addMessage({id:chatId, data:robotMessage}))
-			setFlag(true)
-		}
-		setFlag(false)
-	}, [robotMessage])
-	
-	return (
-		<div className="form">
-							<textarea
-								rows={1}
-								className="form__message"
-								ref={textComp}
-								value={text}
-								placeholder='Message'
-								onChange={event => setText(event.target.value)}>
-							</textarea>
-			<Button variant="contained" endIcon={<SendIcon/>} className="form__send"
-			        onClick={handleAddMessage}>Send</Button>
-		</div>
-	)
-}
 
-const MessageComponent = ({chatId}) => {
-	const chats = useSelector(getChatList, shallowEqual)
-	
-	return (
-		<div className="wrapper">
-			<div className="chat">
-				{chatId && chats[chatId] ? chats[chatId].messages.map((item, id) => [<div
-						className="messages__item"
-						key={id}><h4 className="">Text: {item.text}</h4>
-						<p>Author: {item.author}</p>
-					</div>]) :
-					<h3>Чат не выбран</h3>
-				}
-			</div>
-		</div>
-	)
-}

@@ -2,7 +2,7 @@ import * as React from 'react';
 import './scss/style.scss';
 import {Routes, Route, Link, Navigate} from 'react-router-dom';
 import Home from "./components/Home";
-import Chats from "./components/Chats";
+import ChatsContainer from "./containers/ChatsContainer";
 import Profile from "./components/Profile";
 import {Container} from '@mui/material';
 import {ThemeProvider, createTheme} from '@mui/material/styles';
@@ -36,8 +36,8 @@ function App() {
 					<Container fixed className="container">
 						<Routes>
 							<Route path='/' element={<Home/>}/>
-							<Route path='/chats' element={<Chats/>}>
-								<Route path=':chatId' element={<Chats/>}/>
+							<Route path='/chats' element={<ChatsContainer/>}>
+								<Route path=':chatId' element={<ChatsContainer/>}/>
 								</Route>
 							<Route path='/profile' element={<Profile/>}/>
 							<Route path='*' element={<Navigate to='/'/>}/>
