@@ -1,4 +1,5 @@
 import {chatReducers} from "../slice/chats";
+import {exchangeReducers} from "../slice/exchange";
 import {profileReducers} from '../slice/profile'
 import { configureStore, combineReducers, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist';
@@ -12,6 +13,7 @@ const middleware = getDefaultMiddleware({
 
 const reducers = combineReducers({
 	chatReducers: chatReducers,
+	exchangeReducers: exchangeReducers,
 	profileReducers: profileReducers
 })
 

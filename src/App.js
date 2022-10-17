@@ -1,11 +1,13 @@
 import * as React from 'react';
 import './scss/style.scss';
-import {Routes, Route, Link, Navigate} from 'react-router-dom';
+import {Routes, Route, Navigate} from 'react-router-dom';
 import Home from "./components/Home";
 import ChatsContainer from "./containers/ChatsContainer";
 import Profile from "./components/Profile";
+import Exchange from "./components/Exchange";
 import {Container} from '@mui/material';
 import {ThemeProvider, createTheme} from '@mui/material/styles';
+import Header from "./components/Header";
 
 const theme = createTheme({
 	palette: {
@@ -20,19 +22,8 @@ function App() {
 	return (
 		<div className="app">
 			<ThemeProvider theme={theme}>
-				<header className='header'>
-					<div className="container">
-						<div className='header__list'>
-							<h3 className="title">React</h3>
-							<h4><Link to='/'>Home</Link></h4>
-							<h4><Link to='/chats'>Chats</Link></h4>
-							<h4><Link to='/profile'>Profile</Link></h4>
-						</div>
-					</div>
-				</header>
-				
+				<Header/>
 				<main>
-					
 					<Container fixed className="container">
 						<Routes>
 							<Route path='/' element={<Home/>}/>
@@ -40,6 +31,7 @@ function App() {
 								<Route path=':chatId' element={<ChatsContainer/>}/>
 								</Route>
 							<Route path='/profile' element={<Profile/>}/>
+							<Route path='/exchange' element={<Exchange/>}/>
 							<Route path='*' element={<Navigate to='/'/>}/>
 						</Routes>
 					
