@@ -1,0 +1,42 @@
+{
+  "chats": [
+    {
+      "id": 0,
+      "name": "Mark",
+      "messages": [
+        {
+          "author": "Mark",
+          "text": "Hi"
+        },
+        {
+          "author": "You",
+          "text": "Hello"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "John",
+      "messages": [
+        {
+          "author": "John",
+          "text": "What is your name"
+        },
+        {
+          "author": "You",
+          "text": "my name is Ivan"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Maria",
+      "messages": []
+    },
+    {
+      "id": 3,
+      "name": "Michael",
+      "messages": []
+    }
+  ]
+}

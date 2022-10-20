@@ -13,6 +13,8 @@ const Header = () => {
 					<h4><Link to='/chats'>Chats</Link></h4>
 					<h4><Link to='/exchange'>Exchange</Link></h4>
 					<h4><Link to='/profile'>Profile</Link></h4>
+					<Link to="/login">Sign In</Link>
+					<Link to="/signup">Sign Up</Link>
 				</div>
 			</div>
 		</header>

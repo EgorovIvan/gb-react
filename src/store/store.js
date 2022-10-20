@@ -1,9 +1,8 @@
 import {chatReducers} from "../slice/chats";
 import {exchangeReducers} from "../slice/exchange";
 import {profileReducers} from '../slice/profile'
+import {userReducers} from '../slice/user'
 import { configureStore, combineReducers, getDefaultMiddleware } from '@reduxjs/toolkit'
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 
 const middleware = getDefaultMiddleware({
 	immutableCheck: false,
@@ -14,19 +13,13 @@ const middleware = getDefaultMiddleware({
 const reducers = combineReducers({
 	chatReducers: chatReducers,
 	exchangeReducers: exchangeReducers,
-	profileReducers: profileReducers
+	profileReducers: profileReducers,
+	userReducers: userReducers
 })
 
 export const store = configureStore({
-	reducer: persistReducer(
-		{
-			key: 'root',
-			storage
-		},
-		reducers
-	),
+	reducer: reducers,
 	middleware,
 	devTools: process.env.NODE_ENV !== 'production',
 })
 
-export const persistor = persistStore(store);
