@@ -18,25 +18,25 @@ const exchangeSlice = createSlice({
 	initialState: {
 		currency: [],
 		isLoading: false,
-		err: null
+		isError: null
 	},
 	reducers: {},
 	extraReducers: {
-		[apiThunk.pending]: (state, action) => {
+		[apiThunk.pending]: (state) => {
 			state.isLoading = true
-			state.err = null
+			state.isError = null
 		},
 		[apiThunk.fulfilled]: (state, action) => {
 			state.currency = Object.values(action.payload)
 			state.isLoading = false
-			state.err = null
+			state.isError = null
 		},
-		[apiThunk.pending]: (state, action) => {
-			state.err = true
+		[apiThunk.rejected]: (state, action) => {
+			state.isError = true
 		}
 	}
 })
 
-export const {} = exchangeSlice.actions
 
 export const exchangeReducers = exchangeSlice.reducer
+export default exchangeSlice.reducer

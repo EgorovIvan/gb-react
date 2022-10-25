@@ -1,14 +1,13 @@
 import * as React from "react"
-import { useEffect, useState } from "react"
 import {Routes, Navigate, Route} from "react-router-dom"
 import Header from "./Header"
 import {Container} from "@mui/material"
-import Home from "./Home"
+import Home from "../pages/Home"
 import ChatsContainer from "../containers/ChatsContainer"
-import Profile from "./Profile"
-import Exchange from "./Exchange"
-import SignUp from "./SignUp"
-import Login from "./Login"
+import Profile from "../pages/Profile"
+import Exchange from "../pages/Exchange"
+import SignUp from "../pages/SignUp"
+import Login from "../pages/Login"
 
 const AppRoutes = () => {
 

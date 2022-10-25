@@ -4,7 +4,7 @@ import * as React from "react";
 const TableRow = ({item}) => {
 	return (
 		<div>
-			<hr/>
+			<hr style={{width: "600px"}}/>
 			<div className='table'>
 				<div className='table__row'>
 					{item?.CharCode}

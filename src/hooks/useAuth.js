@@ -1,5 +1,5 @@
 import { useSelector, shallowEqual } from "react-redux"
-import getUser from '../store/user/selectors'
+import getUser from '../redux/store/user/selectors'
 
 const useAuth = () => {
     const {email,token,id} = useSelector(getUser, shallowEqual)

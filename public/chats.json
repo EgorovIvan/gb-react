@@ -30,13 +30,11 @@
     },
     {
       "id": 2,
-      "name": "Maria",
-      "messages": []
+      "name": "Maria"
     },
     {
       "id": 3,
-      "name": "Michael",
-      "messages": []
+      "name": "Michael"
     }
   ]
 }

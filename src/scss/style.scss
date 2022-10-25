@@ -4,12 +4,8 @@
   text-align: center;
 }
 
-hr {
-  width: 600px;
-}
 
 .header {
-  background-color: #282c34;
   height: 120px;
   display: flex;
   flex-direction: column;
@@ -17,12 +13,21 @@ hr {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  background-color: #282c34;
 
   &__list {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 800px;
+    margin: 0 40px;
+  }
+
+  &__sign {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100px;
     margin: 0 auto;
   }
 }
@@ -36,7 +41,8 @@ main {
 }
 
 .container {
-  width: 1200px;
+  display: flex;
+  width: 1000px;
   margin: 0 auto;
 }
 
@@ -100,9 +106,12 @@ main {
 .exchange {
   display: flex;
   flex-direction: column;
-  width: 600px;
+  width: 680px;
   margin: 0 auto;
-
+  padding: 20px;
+  -webkit-box-shadow: 0px 5px 10px 9px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 5px 10px 9px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 5px 10px 9px rgba(34, 60, 80, 0.2);
 
   &__title {
     margin-bottom: 20px;
@@ -128,6 +137,65 @@ main {
 
   &__header {
     width: 115px;
+  }
+}
+
+.profile {
+
+  width: 400px;
+  height: 400px;
+  top: 100px;
+  margin: 0 auto;
+  padding: 20px;
+  -webkit-box-shadow: 0px 5px 10px 9px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 5px 10px 9px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 5px 10px 9px rgba(34, 60, 80, 0.2);
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+
+    font-size: 22px;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: row;
+    width: 360px;
+    height: 48px;
+    margin: 0 auto;
+    padding: 5px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__img {
+    width: 55%;
+    height: 55%;
+    padding: 10px;
+  }
+}
+
+.login {
+  display: block;
+  width: 360px;
+  height: 280px;
+  top: 100px;
+  padding: 10px;
+  margin: 0 auto;
+  -webkit-box-shadow: 0px 5px 10px 9px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 5px 10px 9px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 5px 10px 9px rgba(34, 60, 80, 0.2);
+
+
+  &__input {
+    margin: 10px;
+  }
+
+  &__btn {
+    margin: 10px;
   }
 }
 

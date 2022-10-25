@@ -4,12 +4,11 @@ import '../scss/style.scss'
 import {Box, Button, Grid, List, ListItem, IconButton, ListItemText, OutlinedInput} from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
-import MessageComponent from './MessageComponent'
+import MessageComponent from '../components/MessageComponent'
 import FormMessageContainer from '../containers/FormMessageContainer'
 
-const Chats = ({chats, chatId, textComp, openForm, setNameChat, handleAddChat, handleOpenForm, handleRemoveChat}) => {
-	
-	
+const Chats = ({find, chats, chatId, textComp, openForm, setNameChat, handleAddChat, handleOpenForm, handleRemoveChat}) => {
+
 	return (
 		<div>
 			<Grid container spacing={2} className="grid">
@@ -48,7 +47,7 @@ const Chats = ({chats, chatId, textComp, openForm, setNameChat, handleAddChat, h
 					</List>
 				</Grid>
 				<Grid>
-					<MessageComponent chatId={chatId}/>
+					<MessageComponent find={find}/>
 					<Box
 						sx={{
 							width: 430,
