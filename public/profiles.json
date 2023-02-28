@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "OJYFaPLRyPaEtT3tmMibQpRAYuk2": {
+      "login": "test@mail.com",
+      "userDate": {
+        "name": "Mark",
+        "email": "test@mail.com",
+        "phoneNumber": "+79034615137"
+      }
+    }
+  }
+}
